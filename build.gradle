@@ -1,4 +1,4 @@
-import groovy.json.JsonSlurper
+import groovy.json.*
 
 plugins {
     id('fabric-loom').version('1.6-SNAPSHOT')
@@ -10,8 +10,7 @@ targetCompatibility = JavaVersion.VERSION_21
 ext.configFile = file "build.properties"
 
 // follow semantic versioning! https://semver.org/
-def modJson = file(sourceSets.main.resources.srcDirs.first().path + '/fabric.mod.json')
-def modSpec = new JsonSlurper().parseText(modJson.text)
+def modSpec = new JsonSlurper().parseText(file(sourceSets.main.resources.srcDirs.first().path + '/fabric.mod.json').text)
 archivesBaseName = modSpec.name
 version = project.minecraft_version + "-" + modSpec.version
 group = project.maven_group + "." + modSpec.id
@@ -34,13 +33,47 @@ dependencies {
     include(modApi(fabricApi.module("fabric-key-binding-api-v1", project.fabric_version)))
 }
 
-processResources {
-    inputs.property "version", project.version
+task tarball(type: Tar) {
+    compression = Compression.GZIP
+    archiveExtension = 'tar.gz'
+    destinationDirectory = layout.buildDirectory.dir('tarball')
+    includeEmptyDirs = false
+    includes = ["**/*.class", "assets/**", "*.mixins.json", "*-refmap.json"]
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
+    from(zipTree(remapJar.archiveFile)) {
+        filesMatching("**/*.class") {
+            FileCopyDetails fcd ->
+                if (fcd.sourcePath.startsWith("${project.group}.bootstrap".replace('.', '/'))) exclude() else include()
+        }
+    }
+
+    outputs.file(archiveFile)
+}
+
+task repackageJar(type: Zip) {
+    entryCompression = ZipEntryCompression.DEFLATED
+    archiveExtension = 'jar'
+    destinationDirectory = remapJar.destinationDirectory
+    archiveAppendix = "darkmagic"
+    includeEmptyDirs = false
+    excludes = ["assets/**", "*.mixins.json", "*-refmap.json"]
+
+    from(tarball.outputs) {
+        rename { _ -> "${modSpec.id}.tar.gz" }
+    }
+    from(zipTree(remapJar.archiveFile)) {
+        filesMatching("fabric.mod.json") {
+            filter { String line -> line.replaceAll(/".*\.mixins\.json",?/, "") }
+        }
+        filesMatching("**/*.class") {
+            FileCopyDetails fcd ->
+                if (fcd.sourcePath.startsWith("${project.group}.bootstrap".replace('.', '/'))) include() else exclude()
+        }
     }
 }
+
+remapJar.finalizedBy(tarball)
+tarball.finalizedBy(repackageJar)
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"

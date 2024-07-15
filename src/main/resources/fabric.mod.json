@@ -25,6 +25,9 @@
 
   "environment": "client",
   "entrypoints": {
+    "preLaunch": [
+      "github.io.lucunji.explayerenderer.bootstrap.Bootstrap"
+    ],
     "client": [
       "github.io.lucunji.explayerenderer.Main"
     ],
