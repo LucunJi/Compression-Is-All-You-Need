@@ -87,7 +87,7 @@ java {
 }
 
 jar {
-    from("LICENSE") {
+    from(fileTree("./").matching { include "LICENSE*" }) {
         rename { "${it}_${project.archivesBaseName}" }
     }
 }

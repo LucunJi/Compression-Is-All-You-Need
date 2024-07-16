@@ -1,70 +1,43 @@
-# Extra Player Renderer
+![banner](banner.png)
 
-![](logo/800x256.svg)
+# Compression Is All You Need
 
-[![Quick Fabric Release](https://github.com/LucunJi/ExtraPlayerRenderer/actions/workflows/quick-fabric-release.yml/badge.svg)](https://github.com/LucunJi/ExtraPlayerRenderer/actions/workflows/quick-fabric-release.yml)
-[![](https://img.shields.io/badge/dynamic/json?color=5da545&label=modrinth&suffix=%20downloads&query=hits.0.downloads&url=https://api.modrinth.com/v2/search?query=extraplayerrenderer&limit=1&index=relevance)](https://modrinth.com/mod/7q8r8AtY)
-[![](https://cf.way2muchnoise.eu/full_extraplayerrenderer_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/extraplayerrenderer)
+A wicked project aims at compressing most of the code & resource in a Fabric Mod efficiently.
 
-[![](https://cf.way2muchnoise.eu/versions/extraplayerrenderer.svg)](https://www.curseforge.com/minecraft/mc-mods/extraplayerrenderer)
+Using the forked small project [ExtraPlayerRenderer](https://github.com/LucunJi/ExtraPlayerRenderer) as an example,
+the size is reduced from *79.2KiB* to *59.3KiB*, that's around 25% cut-down (excluding the jar-in-jars and licenses).
 
+For larger projects with much, much, much more code and resource, the reduction in size is expected to be much larger.
 
-**In short, this mod:**
+The project title and banner serve as a harmless mockery.
 
-1. Displays a player model on the screen
-2. Does not depend on other mods (since version 3.0.0)
-3. Is highly configurable
+## Builds
 
-That's it! 
+Find in [Releases](https://github.com/LucunJi/Compression-Is-All-You-Need/releases),
+or latest builds in [GitHub Actions](https://github.com/LucunJi/Compression-Is-All-You-Need/actions) (may expire).
 
-*If you are looking for the same mod but for Forge, [click here](https://www.curseforge.com/minecraft/mc-mods/extra-player-render). It's not developed by me but still good to use.*
+Or build on your own:
+`./gradlew build`
 
+The output is located at `build/libs/xxx-darkmagic-xxx.jar`
 
-## Features
+## How it works?
 
-When the player's posture changes, the position of the rendered model changes smoothly.
+At `preLaunch` entrypoint, the compressed code and resources are extracted,
+then Classloader, mod information, mixins will be updated.
 
-![](images/transition.webp)
+See code in [src/main/java/github/io/lucunji/explayerenderer/bootstrap](src/main/java/github/io/lucunji/explayerenderer/bootstrap)
+for how it loads,
+and tasks in [build.gradle](build.gradle) for how the Jar is built.
 
-The riding entity can also be rendered, so you can show your favorite horse.
+Note: Apache Commons Compress that I used to extract `.tar` archives is only available on client side.
+To make this work on server side, jar-in-jar is needed, which may cause an additional 1MiB space usage.
 
-![](images/vehicle.jpg)
+## License
 
-In spectator mode, the rendered model gets automatically changed into the entity that your view is attached to.
+I don't expect someone will use this weird code in some day, but well, who knows?
 
-![](images/spectator.jpg)
+The code related to building and launching special jars are released under **Unlicense**,
+all other code remains in **LGPL-3.0-or-later** (LGPL 3.0+).
 
-## Fully Configurable
-
-When F8 is pressed in game, the configuration screen pops up.
-
-Explore the tabs and buttons, there are a lot for you to config: the scale, position and rotation of the player model, the head & body's rotations, how to offset (transit) between postures, angle of light on the figure, and so on.
-
-![](images/configs.jpg)
-
-## Downloads & Dependencies
-
-Downloading this mod from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/extraplayerrenderer) or [Modrinth](https://modrinth.com/mod/7q8r8AtY) is recommended, as this can help me gain some rewards.
-
-You can also download from [GitHub](https://github.com/LucunJi/ExtraPlayerRenderer) or [mcmod](https://www.mcmod.cn/class/2374.html).
-
-This mod depends on:
-
-- v3.0.0 and above:
-  - Really NOTHING, just install fabric loader as usual
-- before v3.0.0:
-  - For Minecraft 1.21+
-    - [malilib from sakura-ryoko's fork](https://github.com/sakura-ryoko/malilib/releases)
-  - For Minecraft earlier than 1.21
-    - [malilib](https://modrinth.com/mod/malilib)
-- Optionally, install [Mod Menu](https://modrinth.com/mod/modmenu)
-- Some very early versions (now obsolete) also requires [Fabric API](https://modrinth.com/mod/fabric-api)
-- Some alpha versions require both Fabric API and [YACL](https://modrinth.com/mod/yacl)
-
-## Issues
-When facing any issue, please first try to update the dependencies (malilib and Fabric Loader),
-and then report the bug in [GitHub Issues](https://github.com/LucunJi/ExtraPlayerRenderer/issues) if the issue persists (I rarely look into other places other than GitHub).
-
-This mod is compatible *in theory* with other mods that modifies player's model.
-But such compatibility comes from the structure of vanilla Minecraft code, and is *not intended*. Glitches can happen.
-You may submit compatibility requests to GitHub Issues.
+See the LICENSE, LICENSE-LGPL, LICENSE-UNLICENSE files at project root for detailed explanation.
