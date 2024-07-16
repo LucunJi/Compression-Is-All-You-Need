@@ -26,6 +26,9 @@ The output is located at `build/libs/xxx-darkmagic-xxx.jar`
 
 ## How it works?
 
+Most of the code and resource are compressed into `tar.gz`.
+Only bootstrap code and necessary data remain intact.
+
 At `preLaunch` entrypoint, the compressed code and resources are extracted,
 then Classloader, mod information, mixins will be updated.
 
