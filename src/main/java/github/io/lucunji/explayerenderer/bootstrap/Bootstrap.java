@@ -56,6 +56,8 @@ public class Bootstrap implements PreLaunchEntrypoint {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        // https://stackoverflow.com/a/35212952, too lazy to verify
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> FileUtils.deleteQuietly(extractionDir)));
 
         try {
             FabricLauncherBase.getLauncher().addToClassPath(extractionDir.toPath());
