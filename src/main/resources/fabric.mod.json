@@ -19,8 +19,10 @@
     "sources": "https://github.com/LucunJi/ExtraPlayerRenderer",
     "issues": "https://github.com/LucunJi/ExtraPlayerRenderer/issues"
   },
-
-  "license": "LGPL-3.0-or-later",
+  "license": [
+    "Unlicense",
+    "LGPL-3.0-or-later"
+  ],
   "icon": "assets/explayerenderer/icon.png",
 
   "environment": "client",

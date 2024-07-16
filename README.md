@@ -1,3 +1,4 @@
+
 ![banner](banner.png)
 
 # Compression Is All You Need
@@ -40,6 +41,6 @@ To make this work on server side, jar-in-jar is needed, which may cause an addit
 I don't expect someone will use this weird code in some day, but well, who knows?
 
 The code related to building and launching special jars are released under **Unlicense**,
-all other code remains in **LGPL-3.0-or-later** (LGPL 3.0+).
+all other code (forked from ExtraPlayerRenderer) remains in **LGPL-3.0-or-later** (LGPL 3.0+).
 
-See the LICENSE, LICENSE-LGPL, LICENSE-UNLICENSE files at project root for detailed explanation.
+See the [LICENSE](LICENSE), [LICENSE-LGPL](LICENSE-LGPL), [LICENSE-UNLICENSE](LICENSE-UNLICENSE) files at project root for detailed explanation.
