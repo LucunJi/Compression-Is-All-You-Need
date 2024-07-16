@@ -2,6 +2,8 @@
 
 # Compression Is All You Need
 
+[![Test Build](https://github.com/LucunJi/Compression-Is-All-You-Need/actions/workflows/test-build.yml/badge.svg)](https://github.com/LucunJi/Compression-Is-All-You-Need/actions/workflows/test-build.yml)
+
 A wicked project aims at compressing most of the code & resource in a Fabric Mod efficiently.
 
 Using the forked small project [ExtraPlayerRenderer](https://github.com/LucunJi/ExtraPlayerRenderer) as an example,
