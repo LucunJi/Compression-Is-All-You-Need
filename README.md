@@ -37,7 +37,8 @@ for how it loads,
 and tasks in [build.gradle](build.gradle) for how the Jar is built.
 
 Note: Apache Commons Compress that I used to extract `.tar` archives is only available on client side.
-To make this work on server side, jar-in-jar is needed, which may cause an additional 1MiB space usage.
+To make this work on server side, modify the build script and java code
+to replace `.tar` with an uncompressed, storage `.zip`. ~~jar-in-jar is needed, which may cause an additional 1MiB space usage.~~
 
 ## License
 
